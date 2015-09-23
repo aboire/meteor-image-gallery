@@ -5,7 +5,7 @@ Package.describe({
 
 
 Package.on_use(function (api) {
-	api.add_files([
+	api.addFiles([
 		'isotope.pkgd.min.js',
 		'isotope.item.js'
 	], 'client');

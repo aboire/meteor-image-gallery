@@ -9,16 +9,18 @@ Package.on_use(function (api) {
 	api.use([
     'templating'
   	], 'client');
-
-	api.add_files([
-		'photoswipe.css',
-		'default-skin/default-skin.css',
-		'photoswipe.min.js',
-		'photoswipe-ui-default.min.js',
-		'photoswipe.html',
+		api.addFiles([
+			'photoswipe.min.js',
+			'photoswipe-ui-default.min.js',
+			'photoswipe.html',
+			'photoswipe.css',
+			'default-skin/default-skin.css'
+		], 'client');
+	api.addAssets([
 		'default-skin/default-skin.png',
 		'default-skin/default-skin.svg',
 		'default-skin/preloader.gif'
 	], 'client');
+
 
 });

@@ -2,15 +2,15 @@
   	<div id="albums" class="album-groups">
         <div class="gutter-sizer"></div>
         <div class="grid-sizer"></div>
-        
+
         {{#each items}}
             {{#if isVisible }}
         	   {{> albumGroup}}
             {{/if}}
     	{{/each}}
-    	
-    	{{#unless ready}}        
-	        {{> spinner}}    
+
+    	{{#unless ready}}
+	        
 	    {{/unless}}
 
   	</div>

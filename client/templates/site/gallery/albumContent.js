@@ -6,9 +6,9 @@ var $container,
 	loadMore = false,
 	loadCount = 0,
 	currentFilter = '*',
-	isoOptions = { 
+	isoOptions = {
 					itemSelector: '.itemPL',
-			    	filter:       '*', 
+			    	filter:       '*',
 		  	    	masonry: {
 						gutter: '.gutter-sizer',
 		  	   			columnWidth: '.grid-sizer'
@@ -25,37 +25,37 @@ var appendItems = function () {
 			$container.imagesLoaded(function () {
 				$('.itemPL').removeClass('hidePL');
 			    numItemsInIsotope = $container.isotope('getItemElements').length;
-			    
+
 				$('.itemPL').each(function(index) {
 			  	 	if (index >= numItemsInIsotope) {
 						elems.push(this);
-					} 
+					}
 				});
-				
+
 				$container.isotope('appended', elems).isotope('layout');
-				    
-				if (elems.length > 0) { 
+
+				if (elems.length > 0) {
 					loadMore = false;
 					enableCaptions();
 				 	if ( currentFilter !== '*' && isAlbum() ) {
 				 		$container.isotope({ filter: currentFilter });
 				  		initPhotoSwipeFromDOM('.album');
 				  	}
-				}	
+				}
 			});
 		});
-	} 
+	}
 };
 
 var createAlbumGrid = function () {
 	if (typeof Isotope !== 'undefined' && loadCount === 0 ) {
 
-		$container = $('#album'); 
+		$container = $('#album');
 		loadCount++;
 		Meteor.setTimeout(function () {
 		$container.imagesLoaded( function() {
 			$('.itemPL').removeClass('hidePL');
-		
+
 			$container.isotope( isoOptions ).isotope('layout');
 			if ($('.itemPL').length !== $container.isotope('getItemElements').length) {
 				// If this is the case, images were not loaded properly and must reload.
@@ -64,7 +64,7 @@ var createAlbumGrid = function () {
 			}
 			// immediately load a few more
 			$('.load-more').click();
-			
+
 		});
 		}, 100);
 	} else {
@@ -75,22 +75,22 @@ var createAlbumGrid = function () {
 
 var refreshAlbumGrid = function () {
 	if (loadCount > 0) {
-		$container.isotope('destroy');
+		$container.isotope().isotope('destroy');
 		$container = $('#album').isotope( isoOptions );
 	}
 };
- 
+
  // Destroy isotope grid (used when moving to a new album/tag page)
 var resetAlbumGrid = function () {
 
-	    if ( loadCount > 0 ) { 
+	    if ( loadCount > 0 ) {
 			// superficially create instance in case it doesn't exist
-		    $container.isotope(); 
-			$container.isotope('destroy');
+		    $container.isotope();
+			$container.isotope().isotope('destroy');
 			$container.isotope = false;
 
 			oldItems = [];
-	  		if(!!seed) seed.clear();	
+	  		if(!!seed) seed.clear();
 
 	  		loadMore = false;
 	  		loadCount = 0;
@@ -100,9 +100,9 @@ var resetAlbumGrid = function () {
 // Initialize the isotope grid (first destroy if on a new album page)
 var initAlbumGrid = function () {
 	Meteor.defer(function () {
-		
+
 	    enableCaptions();
-		createAlbumGrid(); 
+		createAlbumGrid();
 
 	});
 };
@@ -111,10 +111,10 @@ var enableCaptions = function () {
 	if (!isTouchDevice()) {
 		$('.itemPL').hover(
 	        function(){
-	            $(this).find('.caption').fadeIn(300); 
+	            $(this).find('.caption').fadeIn(300);
 	        },
 	        function(){
-	            $(this).find('.caption').fadeOut(300); 
+	            $(this).find('.caption').fadeOut(300);
 	        }
 	    );
 	}
@@ -174,12 +174,12 @@ Template.albumContent.helpers({
 
 	    // Determine if we're receiving images from current album subscription by checking if titles are the same
 	    // If titles are different, then don't return items (wait for subscription to catch up)
-	    var title = ''; 
+	    var title = '';
 	    if ( isAlbum() ) title = !! this.album && this.album.title;
 	    else title = !! this.tag && this.tag.name;
 
 	    if ( title === Session.get('album-title') ) {
-	    	items = this.items.fetch(); 
+	    	items = this.items.fetch();
 
 			// test if we're on an album page or tag page
 			if ( isAlbum() && !! this.album) {
@@ -190,11 +190,11 @@ Template.albumContent.helpers({
 	    		if (!! this.album.isShuffled && RandomShuffle ) {
 	        		seed.set(oldItems.length, this.items.count());
 	        		if (seed.get().length === items.length)
-	    		 		items = RandomShuffle.shuffle(items, seed.get()); 
-			 	}  	
-			} 
+	    		 		items = RandomShuffle.shuffle(items, seed.get());
+			 	}
+			}
 
-			// test if all items have loaded 
+			// test if all items have loaded
 			if (items.length == this.count && this.ready) {
 
 				// if moving to a new page (reusing template), reinitialize isotope grid
@@ -226,4 +226,3 @@ Template.albumContent.events({
    	}
 
 });
-

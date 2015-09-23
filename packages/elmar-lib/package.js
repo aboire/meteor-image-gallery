@@ -16,7 +16,7 @@ Package.onUse(function (api) {
 
   api.add_files([
     'lib/lib.js',
-    'lib/medialibrary.js',
+    'lib/mediaLibrary.js',
     'lib/validation.js',
     'lib/users.js',
     'lib/base.js',

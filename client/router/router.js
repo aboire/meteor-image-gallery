@@ -2,21 +2,21 @@ var AdminPages = [
                     'dashboard',
                     'mediaManager',
                     'albumManager',
-                    'tagManager', 
+                    'tagManager',
                     'albumEdit',
                     'settings',
-                    'profile' 
+                    'profile'
                  ];
 
 
 var routerFilters = {
-    isLoggedIn: function (pause) {
+    /*isLoggedIn: function (pause) {
       if (Meteor.loggingIn()) {
         this.render(this.loadingTemplate);
       } else {
         AccountsTemplates.ensureSignedIn.call(this, pause);
       }
-    },
+    },*/
     hasAdmin: function (pause) {
         Meteor.call('hasAdmin', function (err, result) {
             if (!err && !result) // if no admin user detected, go to registration page
@@ -27,8 +27,8 @@ var routerFilters = {
     resetScroll: function () {
         $('#main').scrollTop(0);
     }
-  
-}; 
+
+};
 
 
 // Controllers
@@ -48,8 +48,8 @@ SettingsController = RouteController.extend({
 MediaController = RouteController.extend({
     template: 'album',
     increment: getSetting('mediaPerPage', 12),
-    limit: function() { 
-      return parseInt(this.params.limit) || this.increment; 
+    limit: function() {
+      return parseInt(this.params.limit) || this.increment;
     },
     findOptions: function() {
       return {limit: this.limit()};
@@ -63,41 +63,41 @@ AlbumController = MediaController.extend({
     metadata: function() {
       var album = Albums.findOne({slug: this.params.slug});
       if (!! album)
-        return { title       : capitalize(album.title) + ' Album', 
+        return { title       : capitalize(album.title) + ' Album',
                  description : capitalize(album.title) };
     },
     album: function () {
       return Albums.findOne({slug: this.params.slug});
     },
-    subscriptions: function() {  
+    subscriptions: function() {
       // var options = this.findOptions();
       // options.slug = this.params.slug;
       this.albumLinks = Meteor.subscribe('albumsLight');
-      this.itemsSub = Meteor.subscribe('albumMedia', this.params.slug, this.findOptions());  
+      this.itemsSub = Meteor.subscribe('albumMedia', this.params.slug, this.findOptions());
     },
     onBeforeAction: function() {
         if (Meteor.isClient) {
           var albumTitle = '',
-              album = Albums.findOne({slug: this.params.slug}); 
+              album = Albums.findOne({slug: this.params.slug});
           if ( !! album && !! album.title) albumTitle = album.title;
           if (Session.get('album-title') !== albumTitle && albumTitle !== '' ) {
              Session.set('album-changed', true);
              Session.set('album-title', albumTitle);
-          } 
+          }
         }
         this.next();
     },
-    data: function() {  
-        var hasMore = this.items().count() === this.limit();    
-        var nextPath = this.route.path({slug: this.params.slug, limit: this.limit() + this.increment}); 
+    data: function() {
+        var hasMore = this.items().count() === this.limit();
+        var nextPath = this.route.path({slug: this.params.slug, limit: this.limit() + this.increment});
 
-        return {   
-            album: this.album(), 
+        return {
+            album: this.album(),
             items: this.items(),
             count: this.items().count(),
-            ready: this.itemsSub.ready(),   
+            ready: this.itemsSub.ready(),
             nextPath: hasMore ? nextPath : null,
-        };  
+        };
     }
   });
 
@@ -107,20 +107,20 @@ TagMediaController = MediaController.extend({
     metadata: function() {
       var tag = Tags.findOne({slug: this.params.slug});
       if (!! tag)
-        return { title       : capitalize(tag.name) + ' Tag', 
+        return { title       : capitalize(tag.name) + ' Tag',
                  description : capitalize(tag.name) };
     },
     tag: function () {
       return Tags.findOne({slug: this.params.slug});
     },
-    subscriptions: function() {  
-      this.itemsSub = Meteor.subscribe('tagMedia', this.params.slug, this.findOptions());  
+    subscriptions: function() {
+      this.itemsSub = Meteor.subscribe('tagMedia', this.params.slug, this.findOptions());
       this.albumLinks = Meteor.subscribe('albumsLight');
     },
     onBeforeAction: function() {
       if (Meteor.isClient) {
           var tagTitle = '',
-              tag = Tags.findOne({slug: this.params.slug}); 
+              tag = Tags.findOne({slug: this.params.slug});
           if ( !! tag && !! tag.name) tagTitle = tag.name;
           if (Session.get('album-title') !== tagTitle && tagTitle !== '' ) {
              Session.set('album-changed', true);
@@ -129,17 +129,17 @@ TagMediaController = MediaController.extend({
         }
         this.next();
     },
-    data: function() {  
-        var hasMore = this.items().count() === this.limit();    
-        var nextPath = this.route.path({slug: this.params.slug, limit: this.limit() + this.increment}); 
+    data: function() {
+        var hasMore = this.items().count() === this.limit();
+        var nextPath = this.route.path({slug: this.params.slug, limit: this.limit() + this.increment});
 
-        return {   
-            tag: this.tag(), 
+        return {
+            tag: this.tag(),
             items: this.items(),
             count: this.items().count(),
-            ready: this.itemsSub.ready(),   
-            nextPath: hasMore ? nextPath : null 
-        };  
+            ready: this.itemsSub.ready(),
+            nextPath: hasMore ? nextPath : null
+        };
     }
   });
 
@@ -152,8 +152,8 @@ AlbumGroupsController = RouteController.extend({
 MediaListController = RouteController.extend({
 	  template: 'mediaManager',
 	  increment: getSetting('mediaPerPage', 20),
-	  limit: function() { 
-	    return parseInt(this.params.limit) || this.increment; 
+	  limit: function() {
+	    return parseInt(this.params.limit) || this.increment;
 	  },
     metadata: function() {
       return { title: 'Media Library', description: null}
@@ -165,23 +165,23 @@ MediaListController = RouteController.extend({
         sortBy = SortAction.getSortBy();
       }
 
-      if (!! sortBy) 
+      if (!! sortBy)
         sortAndLimit = {sort: sortBy, limit: this.limit()};
       else
         sortAndLimit = {sort: {'uploadedAt': -1}, limit: this.limit()};
 
       return sortAndLimit;
-      
+
     },
     items: function () {
         return Media.find({}, this.findOptions());
     },
     onAfterAction: function () {
-      if (this.limit() === this.increment) { 
+      if (this.limit() === this.increment) {
           routerFilters.resetScroll();
       }
     },
-    subscriptions: function() {  
+    subscriptions: function() {
 
       var terms = this.findOptions();
       terms.searchQuery = '';
@@ -189,17 +189,17 @@ MediaListController = RouteController.extend({
         terms.searchQuery = GetSearch() || '';
       }
 
-      this.itemsSub = Meteor.subscribe('mediaList', terms);  
+      this.itemsSub = Meteor.subscribe('mediaList', terms);
     },
-	  data: function() {  
-	     	var hasMore = this.items().count() === this.limit(); 
-        var nextPath = this.route.path({limit: this.limit() + this.increment}); 
+	  data: function() {
+	     	var hasMore = this.items().count() === this.limit();
+        var nextPath = this.route.path({limit: this.limit() + this.increment});
 
-	     	return {  
-            items: this.items(),  
-		        ready: this.itemsSub.ready(),  
-		        nextPath: hasMore ? nextPath : null 
-	     	};  
+	     	return {
+            items: this.items(),
+		        ready: this.itemsSub.ready(),
+		        nextPath: hasMore ? nextPath : null
+	     	};
 	  }
 
 	});
@@ -223,28 +223,28 @@ AlbumEditController = RouteController.extend({
           keyword = GetSearch();
           query = new RegExp( keyword, 'i');
       }
-        
 
-      results = Media.find({ $or: [ 
+
+      results = Media.find({ $or: [
                                   {'metadata.title': query},
                                   {'metadata.credit': query},
                                   {'metadata.caption': query},
-                                  {'metadata.tags.name': query},    
+                                  {'metadata.tags.name': query},
                                   {'original.name': query},
                                  ]} );
-      
+
       return results;
-    
+
 
     },
     waitOn: function () {
       return [Meteor.subscribe('mediaThumbnails', this.findOptions()), Meteor.subscribe('album', this.params._id)];
     },
-    data: function() {  
-        return {  
-            mediaItems: this.mediaItems(),   
-            album: this.album()    
-        };  
+    data: function() {
+        return {
+            mediaItems: this.mediaItems(),
+            album: this.album()
+        };
     }
 
   });
@@ -265,23 +265,23 @@ AlbumListController = RouteController.extend({
           keyword = GetSearch();
           query = new RegExp( keyword, 'i');
       }
-      results = Albums.find({ $or: [ 
+      results = Albums.find({ $or: [
                                      {'title': query},
                                      {'description': query},
                                    ]
                             }, this.findOptions());
-      
+
       return results;
-      
+
 
     },
-    subscriptions: function() {    
-      this.itemsSub = Meteor.subscribe('albums', this.findOptions()); 
+    subscriptions: function() {
+      this.itemsSub = Meteor.subscribe('albums', this.findOptions());
     },
-    data: function() {      
-        return {   
+    data: function() {
+        return {
             items: this.items(),
-        };   
+        };
     }
 
   });
@@ -301,22 +301,22 @@ TagListController = RouteController.extend({
         query = new RegExp( GetSearch(), 'i' );
       }
 
-      if (!! sortBy) 
+      if (!! sortBy)
         sortObj = { sort: sortBy };
 
       results = Tags.find({'name': query}, sortObj );
-      
+
       return results;
-      
+
 
     },
     waitOn: function () {
       return [ Meteor.subscribe('mediaTags') ];
     },
-    data: function() {  
+    data: function() {
         return {
           tags: this.tags()
-        }  
+        }
     }
 
   });
@@ -334,7 +334,7 @@ TagListController = RouteController.extend({
       }
     });
 
-    Router.onBeforeAction(routerFilters.isLoggedIn, {only: AdminPages});
+    //Router.onBeforeAction(routerFilters.isLoggedIn, {only: AdminPages});
     Router.onBeforeAction(routerFilters.hasAdmin, {only: ['atSignIn']});
 
     Router.onBeforeAction(function () {
@@ -345,11 +345,11 @@ TagListController = RouteController.extend({
       this.next();
     }, {except: ['tag', 'album']});
 
-    Router.onBeforeAction(function () { 
-      if(Meteor.isClient) { 
-        pageChanged(false); 
-      } 
-      this.next() 
+    Router.onBeforeAction(function () {
+      if(Meteor.isClient) {
+        pageChanged(false);
+      }
+      this.next()
     });
 
 
@@ -360,9 +360,9 @@ TagListController = RouteController.extend({
 
         if (typeof this.metadata === 'function' && !! this.metadata()) {
           var meta = this.metadata();
-          
-          title += !! meta.title ? ' / ' + meta.title : '';   
-          description = !! meta.description ? meta.description : description; 
+
+          title += !! meta.title ? ' / ' + meta.title : '';
+          description = !! meta.description ? meta.description : description;
 
         } else {
           var name = Router.current().route.getName();
@@ -377,7 +377,7 @@ TagListController = RouteController.extend({
           $('title').text(title);
           $('meta[name=description]').attr('content', description);
         }
-        
+
         var favicon = getSetting('faviconUrl');
         if (!! favicon && Meteor.isClient) {
 
@@ -388,16 +388,16 @@ TagListController = RouteController.extend({
             $("#favicon").attr("href", favicon);
           }
         }
-        
+
     });
 
     // go to top of page (except routes that employ pagination or submission)
     Router.onAfterAction(function() {
       routerFilters.resetScroll();
-    }, { except: ['mediaManager', 'album', 'tag', 'settings']}); 
+    }, { except: ['mediaManager', 'album', 'tag', 'settings']});
 
     Router.onAfterAction(function() {
-        GAnalytics.pageview();
+        //GAnalytics.pageview();
     });
 
 // Routes
@@ -415,7 +415,7 @@ TagListController = RouteController.extend({
     });
 
   /**
-    * Albums 
+    * Albums
     * Path: /albums/:limit
     * Default page for albums
     */
@@ -460,7 +460,7 @@ TagListController = RouteController.extend({
     });
 
   /**
-    * Media Library 
+    * Media Library
     * Path: /admin/media-manager/:limit
     * Default page for viewing, adding and editing images
     */
@@ -471,7 +471,7 @@ TagListController = RouteController.extend({
     });
 
   /**
-    * Album Library 
+    * Album Library
     * Path: /admin/album-manager/:limit
     * Default page for viewing, adding albums
     */
@@ -483,7 +483,7 @@ TagListController = RouteController.extend({
     });
 
   /**
-    * Tags Library 
+    * Tags Library
     * Path: /admin/tag-manager/
     * Default page for viewing, adding/removing tags
     */
@@ -495,7 +495,7 @@ TagListController = RouteController.extend({
     });
 
   /**
-    * Site Settings 
+    * Site Settings
     * Path: /admin/settings
     * View / Edit settings form
     */
@@ -507,7 +507,7 @@ TagListController = RouteController.extend({
     });
 
   /**
-    * Dashboard  
+    * Dashboard
     * Path: /admin
     * Default admin landing page
     */
@@ -518,9 +518,9 @@ TagListController = RouteController.extend({
          this.next();
       },
     });
-  
+
     /**
-    * Contact Page 
+    * Contact Page
     * Path: /contact
     * Contact form
     */
@@ -531,7 +531,7 @@ TagListController = RouteController.extend({
     });
 
     /**
-    * About Page 
+    * About Page
     * Path: /about
     * About information
     */
@@ -541,7 +541,7 @@ TagListController = RouteController.extend({
       path          : '/about'
     });
 
-  
+
     Router.route('/sign-out', {
       name: 'signOut',
       template: 'albums',
@@ -582,4 +582,7 @@ TagListController = RouteController.extend({
       name            : 'notFound'
     });
 
-    
+
+    Router.plugin('ensureSignedIn', {
+      only: AdminPages
+  });
