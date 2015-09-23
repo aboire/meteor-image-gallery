@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="btn-square navbar-toggle" data-toggle="collapse" data-target="#navbarFilters">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">{{_ "Toggle navigation"}}</span>
             <h3>Tags <span class="glyphicon glyphicon-chevron-down"></span></h3>
           </button>
           <span class="navbar-brand">
@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="navbarFilters">
           <ul class="nav navbar-nav">
             <li>
-              <a href="#" class="btn btn-link filter-btn" data-filter="*">show all</a>
+              <a href="#" class="btn btn-link filter-btn" data-filter="*">{{_ "show all"}}</a>
             </li>
             {{#each tags}}
             <li>

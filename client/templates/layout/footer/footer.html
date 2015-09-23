@@ -12,8 +12,8 @@
 	         	{{> tagLinks }}
 	        {{/if}}
 		    </div>
-		    <div class="copyright">&copy;{{ year }} {{ getSetting 'title'}} 
-		    	{{#unless isAdmin}} | <a href="{{pathFor route='atSignIn'}}">Sign In</a>{{/unless}} 
+		    <div class="copyright">&copy;{{ year }} {{ getSetting 'title'}}
+		    	{{#unless isAdmin}} | <a href="{{pathFor route='atSignIn'}}">{{_ "Sign In"}}</a>{{/unless}} 
 		    </div>
 	    </div>
 	</footer>

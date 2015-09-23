@@ -49,3 +49,4 @@ useraccounts:iron-routing
 aldeed:autoform@=5.5.1
 elmar-contact-form
 sacha:spin
+tap:i18n

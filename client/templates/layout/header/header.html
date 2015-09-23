@@ -3,7 +3,7 @@
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">{{_ "Toggle navigation"}}</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -12,9 +12,9 @@
         </div>
         <div id="navbar-main" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li class="{{ isActive 'albums' 'home' 'album'}}"><a href="{{ pathFor route='albums'}}">Albums</a></li>
-            <li class="{{ isActive 'about'}}"><a href="{{ pathFor route='about'}}">About</a></li>
-            <li class="{{ isActive 'contact'}}"><a href="{{ pathFor route='contact'}}">Contact</a></li>
+            <li class="{{ isActive 'albums' 'home' 'album'}}"><a href="{{ pathFor route='albums'}}">{{_ "Albums"}}</a></li>
+            <li class="{{ isActive 'about'}}"><a href="{{ pathFor route='about'}}">{{_ "About"}}</a></li>
+            <li class="{{ isActive 'contact'}}"><a href="{{ pathFor route='contact'}}">{{_ "Contact"}}</a></li>
           </ul>
         </div>
       </div>

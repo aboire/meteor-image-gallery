@@ -1,7 +1,7 @@
 <template name="albums">
 	{{#if isAdmin}}
 	<h5 class="col-sm-12 text-right">
-		<a href="{{ pathFor route='albumManager'}}"><span class="glyphicon glyphicon-cog"></span> edit albums</a>
+		<a href="{{ pathFor route='albumManager'}}"><span class="glyphicon glyphicon-cog"></span> {{_ "edit albums"}}</a>
 	</h5>
 	{{/if}}
 	<div class="col-sm-12 text-center">

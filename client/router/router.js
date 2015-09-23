@@ -35,7 +35,7 @@ var routerFilters = {
 
 SettingsController = RouteController.extend({
     metadata: function () {
-        return { title: 'Settings', description: null};
+        return { title: TAPi18n.__('Settings'), description: null};
     },
     data: function () {
         return {
@@ -156,7 +156,7 @@ MediaListController = RouteController.extend({
 	    return parseInt(this.params.limit) || this.increment;
 	  },
     metadata: function() {
-      return { title: 'Media Library', description: null}
+      return { title: TAPi18n.__('Media Library'), description: null}
     },
     findOptions: function() {
       var sortBy = '',
@@ -213,7 +213,7 @@ AlbumEditController = RouteController.extend({
       return Albums.findOne(this.params._id);
     },
     metadata: function() {
-      return { title: 'Edit Album', description: null}
+      return { title: TAPi18n.__('Edit Album'), description: null}
     },
     mediaItems: function() {
        var keyword = '',
@@ -255,7 +255,7 @@ AlbumListController = RouteController.extend({
       return { sort: { order: 1 }};
     },
     metadata: function() {
-      return { title: 'Albums', description: null};
+      return { title: TAPi18n.__('Albums'), description: null};
     },
     items: function () {
       var keyword = '',
@@ -289,7 +289,7 @@ AlbumListController = RouteController.extend({
 TagListController = RouteController.extend({
     template: 'tagManager',
     metadata: function() {
-      return { title: 'Tags', description: null };
+      return { title: TAPi18n.__('Tags'), description: null };
     },
     tags: function () {
       var sortBy = '',

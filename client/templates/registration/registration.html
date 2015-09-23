@@ -1,7 +1,7 @@
 <template name="registration">
 	<div class="col-md-6 col-md-offset-3">
-		<h3>Get Started</h3> 
-		<p>Welcome to your new image gallery. To get started, register an admin account.</p>
+		<h3>{{_ "Get Started"}}</h3>
+		<p>{{_ "Welcome to your new image gallery To get started, register an admin account"}}"</p>
 		<br>
 		<h4>Register</h4>
 		{{#autoForm schema=registrationSchema id="regForm" type="method" meteormethod="createAdminUser"}}
@@ -11,7 +11,7 @@
 
 	    <br>
 	    <div class="submit-buttons">
-	      <button type="submit" class="btn btn-primary">Submit</button>
+	      <button type="submit" class="btn btn-primary">{{_ "Submit"}}</button>
 	    </div>
 	    {{/autoForm}}
 	    <br>

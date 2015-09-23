@@ -1,16 +1,16 @@
 <template name="about">
 	<div class="row">
 		{{#if isAdmin}}
-		<h5 class="col-sm-12 text-right"><a href="{{ pathFor route='settings'}}"><span class="glyphicon glyphicon-cog"></span> edit about</a>
+		<h5 class="col-sm-12 text-right"><a href="{{ pathFor route='settings'}}"><span class="glyphicon glyphicon-cog"></span> {{_ "edit about"}}</a>
 		</h5>
 		{{/if}}
 	</div>
-	
+
 	<div class="row">
-	
+
 		<div class="col-sm-12">
 			{{{ getSetting 'aboutCode' 'Add about code in settings.' }}}
 		</div>
-	
-	</div> 
+
+	</div>
 </template>
