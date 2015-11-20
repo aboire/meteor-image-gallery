@@ -3,6 +3,8 @@
 // largeStore: large images for display purposes (carousel, popups etc)
 // imageStore: original images to be used to produce a new large image if the image is manipulated (e.g. watermarking)
 
+var WATERMARK = "© Outremerveilles";
+
 FS.debug=true;
 
 // function to resize incoming images based on longest side
@@ -50,7 +52,7 @@ var thumbStore = new FS.Store.S3("thumb", {
               x = (width / 2) - (cropLen / 2),
               y = (height / 2) - (cropLen / 2);
 
-          transformer.resize(width, height).autoOrient().quality(60).crop(cropLen, cropLen, x, y).gravity('SouthEast').drawText(10, 50, "from scratch").stream('PNG').pipe(writeStream);
+          transformer.resize(width, height).autoOrient().quality(60).crop(cropLen, cropLen, x, y).gravity('SouthEast').stroke("#ffffff").drawText(10, 50, WATERMARK).stream('PNG').pipe(writeStream);
 
           // save dimensions
           fileObj.update({$set: {'metadata.widthTmb': width, 'metadata.heightTmb': height}});
@@ -87,7 +89,7 @@ var imageStore = new FS.Store.S3("default", {
             var width = newSize.width;
             var height = newSize.height;
 
-            transformer.resize(width, height).autoOrient().gravity('SouthEast').drawText(10, 50, "from scratch").stream().pipe(writeStream);
+            transformer.resize(width, height).autoOrient().gravity('SouthEast').stroke("#ffffff").drawText(10, 50, WATERMARK).stream().pipe(writeStream);
 
             // save dimensions
             fileObj.update({$set: {'metadata.width': width, 'metadata.height': height}});
@@ -126,7 +128,7 @@ var largeStore = new FS.Store.S3("image_lg",  {
                 height = newSize.height;
             }
 
-            transformer.resize(width, height).autoOrient().quality(80).gravity('SouthEast').drawText(10, 50, "from scratch").stream().pipe(writeStream);
+            transformer.resize(width, height).autoOrient().quality(80).gravity('SouthEast').stroke("#ffffff").drawText(10, 50, WATERMARK).stream().pipe(writeStream);
 
             // save dimensions
             fileObj.update({$set: {'metadata.widthLg': width, 'metadata.heightLg': height}});
@@ -168,7 +170,7 @@ var mediumStore = new FS.Store.S3("image_md",  {
                 height = newSize.height;
             }
 
-            transformer.resize(width, height).autoOrient().quality(60).gravity('SouthEast').drawText(10, 50, "from scratch").stream().pipe(writeStream);
+            transformer.resize(width, height).autoOrient().quality(60).gravity('SouthEast').stroke("#ffffff").drawText(10, 50, WATERMARK).stream().pipe(writeStream);
             fileObj.update({$set: {'metadata.widthMd': width, 'metadata.heightMd': height}});
 
           }

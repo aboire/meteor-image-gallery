@@ -1,16 +1,10 @@
 <template name="about">
 	<div class="row">
-		{{#if isAdmin}}
-		<h5 class="col-sm-12 text-right"><a href="{{ pathFor route='settings'}}"><span class="glyphicon glyphicon-cog"></span> {{_ "edit about"}}</a>
-		</h5>
-		{{/if}}
-	</div>
-
-	<div class="row">
-
 		<div class="col-sm-12">
-			{{{ getSetting 'aboutCode' 'Add about code in settings.' }}}
+					<h3>{{_ "how it works"}}</h3>
+			<p>Ce site est réservé aux clients d'Outremerveilles souhaitant bénéficier de photos professionnelles de La Réunion pour agrémenter leur site internet.
+			Il suffit de naviguer dans les différentes galeries d'image, et pour choisir une photo, il suffit de copier-coller le lien URL de l'image tel que présenter dans l'image ci-après, et nous transmettre ce lien.
+			<img src="/img/explication-photo.irl.jpg"></p>
 		</div>
-
 	</div>
 </template>

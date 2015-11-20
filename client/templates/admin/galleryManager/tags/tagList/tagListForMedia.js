@@ -12,10 +12,12 @@ Template.tagListForMedia.helpers({
 	    } else {
 	      media = Session.get('selected-images');
 	    }
-		
-		_.each( media, function (mId) {  
+
+		_.each( media, function (mId) {
 			var m = Media.findOne({_id: mId});
+			if(m && m.metadata && m.metadata.tags){
 			tags.push(m.metadata.tags);
+			}
 		});
 
 		var tagIds = [];
@@ -33,7 +35,7 @@ Template.tagListForMedia.helpers({
 		var m = [];
 		if ( typeof Template.parentData(1).mediaItems !== undefined ) {
         	m = Template.parentData(1).mediaItems;
-	    } 
+	    }
 	    return m;
 	}
 });
